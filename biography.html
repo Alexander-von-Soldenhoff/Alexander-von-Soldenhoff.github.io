@@ -2,85 +2,430 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Alexander von Soldenhoff</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biography — Alexander von Soldenhoff</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d1117;
+      --navy2:  #161b22;
+      --steel:  #21262d;
+      --border: #30363d;
+      --muted:  #8b949e;
+      --white:  #f0f6fc;
+      --blue:   #388bfd;
+      --blue2:  #1f6feb;
+      --body-bg:#f5f7fa;
+      --body-fg:#1c1c1e;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f7fa;
-      color: #333;
-      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      background: var(--body-bg);
+      color: var(--body-fg);
+      line-height: 1.7;
     }
 
-    header {
-      background: #0d1117;
-      padding: 20px 40px;
-      color: white;
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13,17,23,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 56px;
     }
 
-    nav a {
-      margin-right: 25px;
+    .nav-brand {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.01em;
       text-decoration: none;
-      color: #c9d1d9;
+    }
+
+    .nav-links { display: flex; gap: 6px; }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
       font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
     }
 
-    nav a:hover {
-      color: #58a6ff;
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+      background: var(--steel);
     }
 
-    main {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
+    /* PAGE HERO */
+    .page-hero {
+      background: var(--navy);
+      padding: 120px 10vw 64px;
+      position: relative;
+      overflow: hidden;
     }
 
-    h1 {
-      font-size: 36px;
+    canvas#grid {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .page-hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+    .page-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
       font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .page-hero p {
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 520px;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 72px 24px 80px;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      margin-bottom: 72px;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: #e2e8f0;
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .timeline-item:last-child { margin-bottom: 0; }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -34px;
+      top: 7px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue2);
+      border: 2px solid var(--body-bg);
+      box-shadow: 0 0 0 2px var(--blue2);
+    }
+
+    .timeline-year {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--blue2);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .timeline-item h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0d1117;
+      margin-bottom: 2px;
+    }
+
+    .timeline-item p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    /* BIO TEXT */
+    .bio-section {
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue2);
       margin-bottom: 10px;
     }
 
-    h2 {
-      margin-top: 40px;
+    .bio-section h2 {
       font-size: 24px;
       font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0d1117;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
     }
 
-    p, li {
-      font-size: 17px;
+    .bio-section p {
+      font-size: 16px;
+      color: #374151;
+      max-width: 68ch;
+      margin-bottom: 18px;
     }
 
-    ul {
-      margin-left: 20px;
+    .bio-section p:last-child { margin-bottom: 0; }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: var(--muted);
+      padding: 48px 40px 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-contact h3 {
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .footer-contact a,
+    .footer-contact span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      text-decoration: none;
+      margin-bottom: 6px;
+      transition: color 0.2s;
+    }
+
+    .footer-contact a:hover { color: var(--blue); }
+
+    .footer-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .footer-logo img {
+      height: 36px;
+      filter: brightness(0) invert(0.7);
+      transition: filter 0.2s;
+    }
+
+    .footer-logo img:hover { filter: brightness(0) invert(1); }
+
+    .footer-logo span { font-size: 11px; color: var(--border); }
+
+    .footer-bottom {
+      max-width: 800px;
+      margin: 32px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: #444c56;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      .page-hero { padding: 100px 6vw 48px; }
+      .footer-inner { flex-direction: column; }
+      .footer-logo { align-items: flex-start; }
     }
   </style>
 </head>
-
 <body>
 
-<header>
-  <nav>
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">Alexander von Soldenhoff</a>
+  <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="biography.html">Biography</a>
+    <a href="biography.html" class="active">Biography</a>
     <a href="projects.html">Projects</a>
     <a href="education.html">Education</a>
     <a href="contact.html">Contact</a>
-  </nav>
-</header>
+  </div>
+</nav>
 
-<main>
-<main>
-  <h1>Biography</h1>
-  <p>I grew up in Spain, where I lived and studied for 16 years before moving to the Netherlands to pursue Mechanical Engineering. My life has always been driven by curiosity, creativity, and a strong connection to sports and technology.</p>
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <canvas id="grid"></canvas>
+  <div class="page-hero-content">
+    <p class="page-label">Who I Am</p>
+    <h1>Biography</h1>
+    <p>Born in the Netherlands, raised in Spain, studying in Eindhoven. Three countries, three languages, one thread.</p>
+  </div>
+</div>
 
-  <h2>My Life</h2>
-  <p>Now based in Eindhoven, I combine my engineering studies with personal hardware projects, sports training, and continuous learning. I enjoy tennis, prototyping, and exploring how engineering can improve daily life and human performance.</p>
+<!-- MAIN -->
+<main>
+
+  <!-- TIMELINE -->
+  <div class="bio-section">
+    <p class="section-label">At a glance</p>
+    <h2>Timeline</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-year">2003</div>
+        <h3>Born in Nijmegen, Netherlands</h3>
+        <p>Dutch by birth, with German roots on my father's side.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2006</div>
+        <h3>Moved to Spain</h3>
+        <p>Grew up on the Costa del Sol, in and around Torre del Mar.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2023 – 2025</div>
+        <h3>IB Diploma and Spanish Bachillerato</h3>
+        <p>Completed both qualifications simultaneously at I.E.S. Maria Zambrano.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2026</div>
+        <h3>Moved to Eindhoven</h3>
+        <p>Started Mechanical Engineering at Fontys University of Applied Sciences.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BIO TEXT -->
+  <div class="bio-section">
+    <p class="section-label">The longer version</p>
+    <h2>My Story</h2>
+
+    <p>I was born in Nijmegen, in the Netherlands, but grew up in Spain from the age of three. My father is German, my background is mixed, and Spanish became the language I think in. That combination of cultures has always been part of how I see things: I don't fully belong anywhere in particular, which sounds like a problem but is actually quite useful.</p>
+
+    <p>Growing up on the Costa del Sol meant sun, mountains and the sea within reach at the same time. I spent a lot of time outside, hiking, travelling, and paying attention to how places work and what makes them different from one another. That curiosity about the world around me never really switched off. It just expanded into other directions over time, including geopolitics, technology and how systems, whether mechanical or political, hold together or fall apart.</p>
+
+    <p>For my final two years of secondary school I completed both the International Baccalaureate and the Spanish Bachillerato at the same time. It was a heavy workload but it gave me something I didn't expect: a real ability to manage complexity and keep moving when things are demanding. The IB in particular pushed me towards the sciences, and by the end of it I knew I wanted to build things, not just study them.</p>
+
+    <p>In early 2026 I moved back to the Netherlands to start Mechanical Engineering at Fontys in Eindhoven. Moving back to a country I was born in but didn't grow up in is a strange experience. The language came back quickly. The weather did not improve. But Eindhoven is a good city for someone interested in technology and design, and the programme is exactly what I was looking for: applied, hands-on and focused on real problems from day one.</p>
+
+    <p>Outside of my studies I work in marketing and content creation, I follow geopolitics closely, and I travel as much as I can, mostly by train through Europe. I'm most at ease when I'm somewhere new, figuring out how it works.</p>
+
+  </div>
+
 </main>
 
-</main>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-contact">
+      <h3>Get in touch</h3>
+      <a href="mailto:avsoldenhoffmsn@outlook.com">avsoldenhoffmsn@outlook.com</a>
+      <span>+31 6 00 000 000</span>
+    </div>
+    <div class="footer-logo">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Fontys_Hogescholen_logo.svg/320px-Fontys_Hogescholen_logo.svg.png"
+        alt="Fontys University of Applied Sciences"
+      >
+      <span>Fontys University of Applied Sciences</span>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 Alexander von Soldenhoff
+  </div>
+</footer>
+
+<!-- ANIMATED GRID -->
+<script>
+  const canvas = document.getElementById('grid');
+  const ctx = canvas.getContext('2d');
+  let W, H, cells;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    const size = 60;
+    const cols = Math.ceil(W / size) + 1;
+    const rows = Math.ceil(H / size) + 1;
+    cells = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        cells.push({
+          x: c * size, y: r * size, size,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.003 + Math.random() * 0.004
+        });
+      }
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = '#388bfd';
+    ctx.lineWidth = 0.5;
+    cells.forEach(cell => {
+      ctx.globalAlpha = 0.05 + 0.12 * (0.5 + 0.5 * Math.sin(t * cell.speed * 1000 + cell.phase));
+      ctx.strokeRect(cell.x, cell.y, cell.size, cell.size);
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(t) { draw(t / 1000); requestAnimationFrame(loop); }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(loop);
+</script>
 
 </body>
 </html>
