@@ -2,94 +2,386 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alexander von Soldenhoff</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d1117;
+      --navy2:  #161b22;
+      --steel:  #21262d;
+      --border: #30363d;
+      --muted:  #8b949e;
+      --text:   #e6edf3;
+      --white:  #f0f6fc;
+      --blue:   #388bfd;
+      --blue2:  #1f6feb;
+      --body-bg:#f5f7fa;
+      --body-fg:#1c1c1e;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f7fa;
-      color: #333;
-      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      background: var(--body-bg);
+      color: var(--body-fg);
+      line-height: 1.7;
     }
 
-    header {
-      background: #0d1117;
-      padding: 20px 40px;
-      color: white;
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13,17,23,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 56px;
     }
 
-    nav a {
-      margin-right: 25px;
+    .nav-brand {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.01em;
       text-decoration: none;
-      color: #c9d1d9;
+    }
+
+    .nav-links { display: flex; gap: 6px; }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
       font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
     }
 
-    nav a:hover {
-      color: #58a6ff;
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+      background: var(--steel);
     }
 
-    main {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
+    /* HERO */
+    #home {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 120px 10vw 80px;
+      overflow: hidden;
+      background: var(--navy);
     }
 
-    h1 {
-      font-size: 36px;
+    canvas#grid {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+    .hero-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    .hero-name {
+      font-size: clamp(36px, 6vw, 64px);
       font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .hero-tagline {
+      font-size: clamp(15px, 2vw, 18px);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue2);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .hero-cta:hover { background: var(--blue); transform: translateY(-1px); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 2;
+      opacity: 0.7;
+    }
+
+    .scroll-hint span { display: block; width: 1px; height: 36px; background: var(--border); margin: 0 auto; }
+
+    /* MAIN */
+    main { max-width: 800px; margin: 0 auto; padding: 80px 24px 40px; }
+
+    section { margin-bottom: 72px; scroll-margin-top: 80px; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue2);
       margin-bottom: 10px;
     }
 
-    h2 {
-      margin-top: 40px;
-      font-size: 24px;
+    section h2 {
+      font-size: 26px;
       font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0d1117;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
     }
 
-    p, li {
-      font-size: 17px;
+    section p {
+      font-size: 16px;
+      color: #374151;
+      margin-bottom: 16px;
+      max-width: 68ch;
     }
 
-    ul {
-      margin-left: 20px;
+    section p:last-child { margin-bottom: 0; }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: var(--muted);
+      padding: 48px 40px 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-contact h3 {
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .footer-contact a,
+    .footer-contact span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      text-decoration: none;
+      margin-bottom: 6px;
+      transition: color 0.2s;
+    }
+
+    .footer-contact a:hover { color: var(--blue); }
+
+    .footer-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .footer-logo img {
+      height: 36px;
+      filter: brightness(0) invert(0.7);
+      transition: filter 0.2s;
+    }
+
+    .footer-logo img:hover { filter: brightness(0) invert(1); }
+
+    .footer-logo span {
+      font-size: 11px;
+      color: var(--border);
+    }
+
+    .footer-bottom {
+      max-width: 800px;
+      margin: 32px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: #444c56;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      #home { padding: 100px 6vw 60px; }
+      .footer-inner { flex-direction: column; }
+      .footer-logo { align-items: flex-start; }
     }
   </style>
 </head>
-
 <body>
 
-<header>
-  <nav>
-    <a href="index.html">Home</a>
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-brand">Alexander von Soldenhoff</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
     <a href="biography.html">Biography</a>
     <a href="projects.html">Projects</a>
     <a href="education.html">Education</a>
     <a href="contact.html">Contact</a>
-  </nav>
-</header>
+  </div>
+</nav>
 
+<!-- HERO -->
+<section id="home">
+  <canvas id="grid"></canvas>
+  <div class="hero-content">
+    <p class="hero-label">Mechanical Engineering &amp; Beyond</p>
+    <h1 class="hero-name">Alexander<br>von Soldenhoff</h1>
+    <p class="hero-tagline">Engineering student, curious builder, and traveller. Based in Eindhoven.</p>
+    <a href="#about" class="hero-cta">Read more ↓</a>
+  </div>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<!-- CONTENT -->
 <main>
-  <main>
-  <h1>Education & Experience</h1>
+  <section id="about">
+    <p class="section-label">Introduction</p>
+    <h2>Hi, I'm Alexander.</h2>
 
-  <h2>Fontys University of Applied Sciences</h2>
-  <p>Bachelor of Mechanical Engineering (HBO) started in feb 2026 at Fontys Universety of Aplied Sience in Eindhoven. Focus areas include design, prototyping, technical analysis, and engineering documentation.</p>
+    <p>I'm a Mechanical Engineering student at Fontys University of Applied Sciences in Eindhoven. Engineering is not just what I study, it's how I think. I genuinely enjoy pulling something apart to understand it, then figuring out how to make it better. That goes for mechanical systems, but also for software, tools and anything new that crosses my path. New technology excites me, and I try to stay close to what's developing.</p>
 
-   <h2>I.E.S Maria Zambrano (2023-2025) <h2>
-      international baccalaureate with Phisics HL, Maths HL, Spanish A HL, History NM, Chamestry NM, Einglish B HL <p>
-  <h2>Experience</h2>
-  <ul>
-    <li>Advanced CAD modeling (SolidWorks, Fusion 360)</li>
-    <li>Rapid prototyping with 3D printing and CNC</li>
-    <li>Technical reporting and lab analysis</li>
-    <li>Team collaboration and project leadership</li>
-  </ul>
+    <p>Outside of my studies I work in marketing and content creation, which taught me that communicating an idea clearly is just as important as having one. It also pushed me to write and think about audiences, stories and how information lands.</p>
+
+    <p>I follow geopolitics closely. The way countries, economies and power structures interact fascinates me, and I think understanding the world at that level makes you better at almost everything else.</p>
+
+    <p>Travel is a big part of who I am. I explore Europe mostly by train, and I'm happiest when there's a mountain, a coastline or somewhere genuinely remote nearby. Nature recharges me in a way little else does, and most of my best experiences have happened far from a screen.</p>
+
+    <p>This site is a mix of CV and personal diary. You'll find projects I've worked on, experiences that shaped me, and things I've picked up along the way. Feel free to look around.</p>
+  </section>
 </main>
 
-</main>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-contact">
+      <h3>Get in touch</h3>
+      <a href="mailto:your@email.com">your@email.com</a>
+      <span>+31 6 00 000 000</span>
+    </div>
+    <div class="footer-logo">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Fontys_Hogescholen_logo.svg/320px-Fontys_Hogescholen_logo.svg.png"
+        alt="Fontys University of Applied Sciences"
+      >
+      <span>Fontys University of Applied Sciences</span>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 Alexander von Soldenhoff
+  </div>
+</footer>
+
+<!-- ANIMATED GRID -->
+<script>
+  const canvas = document.getElementById('grid');
+  const ctx = canvas.getContext('2d');
+  let W, H, cells;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    const size = 60;
+    const cols = Math.ceil(W / size) + 1;
+    const rows = Math.ceil(H / size) + 1;
+    cells = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        cells.push({
+          x: c * size, y: r * size, size,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.003 + Math.random() * 0.004
+        });
+      }
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = '#388bfd';
+    ctx.lineWidth = 0.5;
+    cells.forEach(cell => {
+      ctx.globalAlpha = 0.05 + 0.12 * (0.5 + 0.5 * Math.sin(t * cell.speed * 1000 + cell.phase));
+      ctx.strokeRect(cell.x, cell.y, cell.size, cell.size);
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(t) { draw(t / 1000); requestAnimationFrame(loop); }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(loop);
+
+  // Scroll-spy
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-links a');
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.nav-links a[href="#${e.target.id}"], .nav-links a[href="index.html"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 }).observe(sections[0]);
+</script>
 
 </body>
 </html>
